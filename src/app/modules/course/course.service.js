@@ -11,4 +11,13 @@ const GET_COURSES_LIST_FROM_DB = async () => {
   return courses;
 };
 
-module.exports = { POST_COURSE_TO_DB, GET_COURSES_LIST_FROM_DB };
+const GET_COURSE_BY_ID_FROM_DB = async (id) => {
+  const course = await Course.findOne({ _id: id });
+  return course;
+};
+
+module.exports = {
+  POST_COURSE_TO_DB,
+  GET_COURSES_LIST_FROM_DB,
+  GET_COURSE_BY_ID_FROM_DB,
+};
