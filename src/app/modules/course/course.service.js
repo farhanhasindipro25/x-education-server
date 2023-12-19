@@ -6,4 +6,9 @@ const POST_COURSE_TO_DB = async (payload) => {
   return course;
 };
 
-module.exports = { POST_COURSE_TO_DB };
+const GET_COURSES_LIST_FROM_DB = async () => {
+  const courses = await Course.find();
+  return courses;
+};
+
+module.exports = { POST_COURSE_TO_DB, GET_COURSES_LIST_FROM_DB };

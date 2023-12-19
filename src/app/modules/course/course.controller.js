@@ -1,4 +1,7 @@
-const { POST_COURSE_TO_DB } = require("./course.service");
+const {
+  POST_COURSE_TO_DB,
+  GET_COURSES_LIST_FROM_DB,
+} = require("./course.service");
 
 const postCourse = async (req, res) => {
   const data = req.body;
@@ -9,4 +12,12 @@ const postCourse = async (req, res) => {
   });
 };
 
-module.exports = { postCourse };
+const getCoursesList = async (req, res) => {
+  const courses = await GET_COURSES_LIST_FROM_DB();
+  res.status(200).json({
+    status: "Courses data lists fetched successfully!",
+    data: courses,
+  });
+};
+
+module.exports = { postCourse, getCoursesList };
