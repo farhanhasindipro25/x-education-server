@@ -3,6 +3,7 @@ const {
   GET_COURSES_LIST_FROM_DB,
   GET_COURSE_BY_ID_FROM_DB,
   UPDATE_COURSE_BY_ID_IN_DB,
+  DELETE_COURSE_BY_ID_FROM_DB,
 } = require("./course.service");
 
 const postCourse = async (req, res) => {
@@ -35,16 +36,13 @@ const patchCourseByID = async (req, res) => {
   try {
     const { id } = req.params;
     const payload = req.body;
-
     const existingCourse = await GET_COURSE_BY_ID_FROM_DB(id);
-
     if (!existingCourse) {
       return res.status(404).json({
         status: "Not Found",
         message: "Course details not found",
       });
     }
-
     const course = await UPDATE_COURSE_BY_ID_IN_DB(id, payload);
     res.status(200).json({
       status: "Course details updated successfully",
@@ -59,4 +57,33 @@ const patchCourseByID = async (req, res) => {
   }
 };
 
-module.exports = { postCourse, getCoursesList, getCourseByID, patchCourseByID };
+const deleteCourseByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const existingCourse = await GET_COURSE_BY_ID_FROM_DB(id);
+    if (!existingCourse) {
+      return res.status(404).json({
+        status: "Error",
+        message: "Course not found",
+      });
+    }
+    await DELETE_COURSE_BY_ID_FROM_DB(id);
+    res.status(200).json({
+      status: "Course deleted successfully!",
+    });
+  } catch (error) {
+    console.error("Could not delete course", error);
+    res.status(500).json({
+      status: "Internal Server Error",
+      message: error,
+    });
+  }
+};
+
+module.exports = {
+  postCourse,
+  getCoursesList,
+  getCourseByID,
+  patchCourseByID,
+  deleteCourseByID,
+};
